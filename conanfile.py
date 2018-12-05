@@ -1,4 +1,5 @@
 from conans import ConanFile, CMake, tools, AutoToolsBuildEnvironment
+from conanos.build import config_scheme
 import os
 
 class LiboggConan(ConanFile):
@@ -14,7 +15,7 @@ class LiboggConan(ConanFile):
     source_subfolder = "source_subfolder"
     settings = "os", "arch", "build_type", "compiler"
     options = {"shared": [True, False], "fPIC": [True, False]}
-    default_options = "shared=False", "fPIC=True"
+    default_options = "shared=True", "fPIC=True"
 
     def config_options(self):
         if self.settings.os == "Windows":
@@ -22,6 +23,7 @@ class LiboggConan(ConanFile):
 
     def configure(self):
         del self.settings.compiler.libcxx
+        config_scheme(self)
 
     def source(self):
         tools.get("{0}/archive/v{1}.tar.gz".format(self.homepage, self.version))
